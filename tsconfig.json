@@ -31,7 +31,7 @@
   },
   "include": [
     "./src/**/*.ts",
-    "./test/**/*.ts", "test/jest.config.js", "test/jest.config.js"
+    "./test/**/*.ts"
   ],
   "exclude": [
     "./node_modules/*",
