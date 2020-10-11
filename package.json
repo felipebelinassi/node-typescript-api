@@ -1,0 +1,48 @@
+{
+  "name": "typescript-api",
+  "version": "1.0.0",
+  "description": "NodeJS TypeScript API",
+  "main": "index.js",
+  "scripts": {
+    "build": "rm -rf ./dist && tsc",
+    "prestart": "yarn build",
+    "start": "node dist/src/index.js",
+    "start:dev": "ts-node-dev --respawn src/index.ts",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "test:functional": "jest --projects ./test --runInBand",
+    "lint": "eslint ./src ./test --ext .ts",
+    "lint:fix": "eslint ./src ./test --ext .ts --fix"
+  },
+  "dependencies": {
+    "module-alias": "^2.2.2"
+  },
+  "devDependencies": {
+    "@types/jest": "^26.0.14",
+    "@types/module-alias": "^2.0.0",
+    "@types/node": "^14.11.8",
+    "@types/supertest": "^2.0.10",
+    "@typescript-eslint/eslint-plugin": "^4.4.0",
+    "@typescript-eslint/parser": "^4.4.0",
+    "eslint": "^7.11.0",
+    "jest": "^26.5.3",
+    "supertest": "^5.0.0",
+    "ts-jest": "^26.4.1",
+    "ts-node-dev": "^1.0.0-pre.63",
+    "typescript": "^4.0.3"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/felipebelinassi/node-typescript-api.git"
+  },
+  "keywords": [
+    "nodejs",
+    "typescript",
+    "api"
+  ],
+  "author": "Felipe Belinassi",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/felipebelinassi/node-typescript-api/issues"
+  },
+  "homepage": "https://github.com/felipebelinassi/node-typescript-api#readme"
+}
