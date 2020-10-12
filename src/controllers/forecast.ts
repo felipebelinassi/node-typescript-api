@@ -1,7 +1,8 @@
-describe('Beach forecast functional tests', () => {
-  it('should return a forecast with just a few times', async () => {
-    const { body, status } = await global.testRequest.get('/forecast');
-    const expected = [
+import { Request, Response } from 'express';
+
+export default {
+  getForecastForLoggedUser(_: Request, res: Response): void {
+    const response = [
       {
         time: '2020-04-26T00:00:00+00:00',
         forecast: [
@@ -42,7 +43,6 @@ describe('Beach forecast functional tests', () => {
       },
     ];
 
-    expect(status).toBe(200);
-    expect(body).toStrictEqual(expected);
-  });
-});
+    res.send(response);
+  },
+};
