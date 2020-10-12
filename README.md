@@ -1,1 +1,3 @@
-# node-typescript-api
+# Node.js API w/ Typescript
+
+Work in progress
