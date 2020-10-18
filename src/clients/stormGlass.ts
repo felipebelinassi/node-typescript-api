@@ -4,6 +4,7 @@ import {
   StormGlassClient,
   StormGlassForecastResponse,
 } from './interface';
+import { RequestError, ResponseError } from '@src/util/errors';
 
 const apiParams =
   'swellDirection,swellHeight,swellPeriod,waveDirection,waveHeight,windDirection,windSpeed';
@@ -23,7 +24,8 @@ const isValidPoint = (point: Partial<StormGlassPoint>): boolean =>
 
 const stormGlass = (request: AxiosStatic): StormGlassClient => {
   const fetchPoints = async (lat: number, long: number) => {
-    const response = await request.get<StormGlassForecastResponse>(
+    try {
+      const response = await request.get<StormGlassForecastResponse>(
       `https://api.stormglass.io/v2/weather/point?lat=${lat}&lng=${long}&params=${apiParams}&source=${apiSource}`,
       {
         headers: {
@@ -32,8 +34,8 @@ const stormGlass = (request: AxiosStatic): StormGlassClient => {
       }
     );
 
-    const validPoints = response.data.hours.filter(isValidPoint);
-    const normalizedResponse = validPoints.map((point) => ({
+      const validPoints = response.data.hours.filter(isValidPoint);
+      const normalizedResponse = validPoints.map((point) => ({
       time: point.time,
       waveHeight: point.waveHeight[apiSource],
       waveDirection: point.waveDirection[apiSource],
@@ -44,7 +46,13 @@ const stormGlass = (request: AxiosStatic): StormGlassClient => {
       windDirection: point.windDirection[apiSource],
     }));
 
-    return normalizedResponse;
+      return normalizedResponse;
+    } catch (err) {
+      if (err.response && err.response.status) {
+        throw new ResponseError(`Error: ${JSON.stringify(err.response.data)} Code: ${err.response.status}`);
+      }
+      throw new RequestError(err.message);
+    }
   };
 
   return {
