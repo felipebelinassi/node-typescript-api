@@ -5,6 +5,7 @@ import {
   StormGlassForecastResponse,
 } from './interface';
 import { RequestError, ResponseError } from '@src/util/errors';
+import config from '@src/server/config';
 
 const apiParams =
   'swellDirection,swellHeight,swellPeriod,waveDirection,waveHeight,windDirection,windSpeed';
@@ -26,13 +27,13 @@ const stormGlass = (request: AxiosStatic): StormGlassClient => {
   const fetchPoints = async (lat: number, long: number) => {
     try {
       const response = await request.get<StormGlassForecastResponse>(
-      `https://api.stormglass.io/v2/weather/point?lat=${lat}&lng=${long}&params=${apiParams}&source=${apiSource}`,
-      {
-        headers: {
-          Authorization: 'fake-token',
-        },
-      }
-    );
+        `${config.services.stormGlass.apiUrl}/weather/point?lat=${lat}&lng=${long}&params=${apiParams}&source=${apiSource}`,
+        {
+          headers: {
+            Authorization: config.services.stormGlass.apiToken,
+          },
+        }
+      );
 
       const validPoints = response.data.hours.filter(isValidPoint);
       const normalizedResponse = validPoints.map((point) => ({
