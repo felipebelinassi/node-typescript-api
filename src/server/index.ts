@@ -1,6 +1,6 @@
-import './util/module-alias';
+import '../util/module-alias';
 import express from 'express';
-import routes from './routes';
+import routes from '../routes';
 
 const app = express();
 
