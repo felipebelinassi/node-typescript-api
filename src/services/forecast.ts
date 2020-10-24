@@ -11,7 +11,7 @@ export interface Beach {
   name: string;
   position: BeachPosition;
   lat: number;
-  long: number;
+  lng: number;
   user: string;
 }
 
@@ -26,11 +26,11 @@ const forecast = (stormGlass: StormGlassClient): ForecastService => {
     const pointsWithCorrectedSources: BeachForecast[] = [];
 
     for (const beach of beaches) {
-      const points = await stormGlass.fetchPoints(beach.lat, beach.long);
+      const points = await stormGlass.fetchPoints(beach.lat, beach.lng);
       const enrichedBeachData = points.map((point) => ({
         ...{
           lat: beach.lat,
-          long: beach.long,
+          lng: beach.lng,
           name: beach.name,
           position: beach.position,
           rating: 1,

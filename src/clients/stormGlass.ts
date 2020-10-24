@@ -33,7 +33,7 @@ export interface ForecastPoint {
 }
 
 export interface StormGlassClient {
-  fetchPoints: (lat: number, long: number) => Promise<ForecastPoint[]>;
+  fetchPoints: (lat: number, lng: number) => Promise<ForecastPoint[]>;
 }
 
 const apiParams =
@@ -53,10 +53,10 @@ const isValidPoint = (point: Partial<StormGlassPoint>): boolean =>
   );
 
 const stormGlass = (request: httpUtil.Request): StormGlassClient => {
-  const fetchPoints = async (lat: number, long: number) => {
+  const fetchPoints = async (lat: number, lng: number) => {
     try {
       const response = await request.get<StormGlassForecastResponse>(
-        `${config.services.stormGlass.apiUrl}/weather/point?lat=${lat}&lng=${long}&params=${apiParams}&source=${apiSource}`,
+        `${config.services.stormGlass.apiUrl}/weather/point?lat=${lat}&lng=${lng}&params=${apiParams}&source=${apiSource}`,
         {
           headers: {
             Authorization: config.services.stormGlass.apiToken,

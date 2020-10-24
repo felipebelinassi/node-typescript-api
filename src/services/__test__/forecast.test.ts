@@ -16,7 +16,7 @@ describe('Forecast Service', () => {
     const beaches: Beach[] = [
       {
         lat: -33.792726,
-        long: 151.289824,
+        lng: 151.289824,
         name: 'Manly',
         position: BeachPosition.E,
         user: 'some-id',
@@ -26,7 +26,7 @@ describe('Forecast Service', () => {
     const expectedResponse = [
       {
         lat: -33.792726,
-        long: 151.289824,
+        lng: 151.289824,
         name: 'Manly',
         position: 'E',
         rating: 1,
@@ -41,7 +41,7 @@ describe('Forecast Service', () => {
       },
       {
         lat: -33.792726,
-        long: 151.289824,
+        lng: 151.289824,
         name: 'Manly',
         position: 'E',
         rating: 1,
@@ -56,7 +56,7 @@ describe('Forecast Service', () => {
       },
       {
         lat: -33.792726,
-        long: 151.289824,
+        lng: 151.289824,
         name: 'Manly',
         position: 'E',
         rating: 1,
