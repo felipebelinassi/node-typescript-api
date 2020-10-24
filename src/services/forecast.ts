@@ -17,8 +17,30 @@ export interface Beach {
 
 export interface BeachForecast extends Omit<Beach, 'user'>, ForecastPoint {}
 
+export interface TimeForecast {
+  time: string;
+  forecast: BeachForecast[];
+}
+
 interface ForecastService {
-  processBeachesForecast: (beaches: Beach[]) => Promise<BeachForecast[]>;
+  processBeachesForecast: (beaches: Beach[]) => Promise<TimeForecast[]>;
+}
+
+const mapForecastByTime = (forecast: BeachForecast[]): TimeForecast[] => {
+  const forecastByTime: TimeForecast[] = [];
+
+  return forecast.reduce((forecastByTime, item) => {
+    const timePoint = forecastByTime.find((forecastItem) => forecastItem.time === item.time);
+    if (!timePoint) {
+      forecastByTime.push({
+        time: item.time,
+        forecast: [item],
+      });
+    } else {
+      timePoint.forecast.push(item);
+    }
+    return forecastByTime;
+  }, forecastByTime);
 }
 
 const forecast = (stormGlass: StormGlassClient): ForecastService => {
@@ -41,7 +63,7 @@ const forecast = (stormGlass: StormGlassClient): ForecastService => {
       pointsWithCorrectedSources.push(...enrichedBeachData);
     }
 
-    return pointsWithCorrectedSources;
+    return mapForecastByTime(pointsWithCorrectedSources);
   }
 
   return {
