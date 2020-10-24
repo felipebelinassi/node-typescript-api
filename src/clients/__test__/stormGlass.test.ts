@@ -10,14 +10,14 @@ describe('StormGlass client', () => {
 
   it('should return the normalized forecast from StormGlass service', async () => {
     const lat = -33.792726;
-    const long = 151.289824;
+    const lng = 151.289824;
 
     mockedRequest.get.mockResolvedValue({
       data: stormGlassFixture
     } as httpUtil.Response);
 
     const stormGlass = stormGlassClient(mockedRequest);
-    const response = await stormGlass.fetchPoints(lat, long);
+    const response = await stormGlass.fetchPoints(lat, lng);
     expect(response).toEqual(stormGlassNormalizedFixture);
   });
 
