@@ -6,14 +6,14 @@ import stormGlassNormalizedFixture from '@test/fixtures/stormglass_normalized_re
 jest.mock('@src/util/request');
 
 describe('StormGlass client', () => {
-  const mockedRequest = httpUtil.request as jest.Mocked<httpUtil.Request>
+  const mockedRequest = httpUtil.request as jest.Mocked<httpUtil.Request>;
 
   it('should return the normalized forecast from StormGlass service', async () => {
     const lat = -33.792726;
     const lng = 151.289824;
 
     mockedRequest.get.mockResolvedValue({
-      data: stormGlassFixture
+      data: stormGlassFixture,
     } as httpUtil.Response);
 
     const stormGlass = stormGlassClient(mockedRequest);
@@ -35,7 +35,7 @@ describe('StormGlass client', () => {
       ],
     };
     mockedRequest.get.mockResolvedValue({
-      data: incompleteResponse
+      data: incompleteResponse,
     } as httpUtil.Response);
 
     const stormGlass = stormGlassClient(mockedRequest);
