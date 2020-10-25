@@ -1,10 +1,11 @@
 import { ForecastPoint, StormGlassClient } from '@src/clients/stormGlass';
+import { ForecastProcessingError } from '@src/util/errors';
 
 export enum BeachPosition {
   S = 'S',
   E = 'E',
   W = 'W',
-  N = 'N'
+  N = 'N',
 }
 
 export interface Beach {
@@ -26,11 +27,28 @@ interface ForecastService {
   processBeachesForecast: (beaches: Beach[]) => Promise<TimeForecast[]>;
 }
 
+const enrichBeachData = (
+  points: ForecastPoint[],
+  beach: Beach
+): BeachForecast[] =>
+  points.map((point) => ({
+    ...{
+      lat: beach.lat,
+      lng: beach.lng,
+      name: beach.name,
+      position: beach.position,
+      rating: 1,
+    },
+    ...point,
+  }));
+
 const mapForecastByTime = (forecast: BeachForecast[]): TimeForecast[] => {
   const forecastByTime: TimeForecast[] = [];
 
   return forecast.reduce((forecastByTime, item) => {
-    const timePoint = forecastByTime.find((forecastItem) => forecastItem.time === item.time);
+    const timePoint = forecastByTime.find(
+      (forecastItem) => forecastItem.time === item.time
+    );
     if (!timePoint) {
       forecastByTime.push({
         time: item.time,
@@ -41,34 +59,28 @@ const mapForecastByTime = (forecast: BeachForecast[]): TimeForecast[] => {
     }
     return forecastByTime;
   }, forecastByTime);
-}
+};
 
 const forecast = (stormGlass: StormGlassClient): ForecastService => {
   const processBeachesForecast = async (beaches: Beach[]) => {
     const pointsWithCorrectedSources: BeachForecast[] = [];
 
-    for (const beach of beaches) {
-      const points = await stormGlass.fetchPoints(beach.lat, beach.lng);
-      const enrichedBeachData = points.map((point) => ({
-        ...{
-          lat: beach.lat,
-          lng: beach.lng,
-          name: beach.name,
-          position: beach.position,
-          rating: 1,
-        },
-        ...point,
-      }))
+    try {
+      for (const beach of beaches) {
+        const points = await stormGlass.fetchPoints(beach.lat, beach.lng);
+        const enrichedBeachData = enrichBeachData(points, beach);
+        pointsWithCorrectedSources.push(...enrichedBeachData);
+      }
 
-      pointsWithCorrectedSources.push(...enrichedBeachData);
+      return mapForecastByTime(pointsWithCorrectedSources);
+    } catch (err) {
+      throw new ForecastProcessingError(err.message);
     }
-
-    return mapForecastByTime(pointsWithCorrectedSources);
-  }
+  };
 
   return {
     processBeachesForecast,
-  }
-}
+  };
+};
 
 export default forecast;

@@ -80,7 +80,9 @@ const stormGlass = (request: httpUtil.Request): StormGlassClient => {
     } catch (err) {
       if (request.isRequestError(err)) {
         throw new ResponseError(
-          `Error: ${JSON.stringify(err.response.data)} Code: ${err.response.status}`
+          `Error: ${JSON.stringify(err.response.data)} Code: ${
+            err.response.status
+          }`
         );
       }
       throw new RequestError(err.message);
