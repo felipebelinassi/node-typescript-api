@@ -1,6 +1,7 @@
 import nodeConfig from 'config';
 
 const config = {
+  port: nodeConfig.get<string>('port'),
   database: {
     url: nodeConfig.get<string>('database.url'),
   },

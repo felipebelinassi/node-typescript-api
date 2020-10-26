@@ -1,10 +1,13 @@
-import { server, closeServer } from '@src/server';
+import * as server from '@src/server';
+import { Server } from 'http';
 import supertest from 'supertest';
 
+let jestServer: Server;
 beforeAll(() => {
-  global.testRequest = supertest(server);
+  jestServer = server.start(3000);
+  global.testRequest = supertest(jestServer);
 });
 
 afterAll(async () => {
-  await closeServer();
+  await server.close(jestServer);
 });
