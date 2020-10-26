@@ -1,5 +1,6 @@
 import { request } from '@src/util/request';
-import forecastService, { Beach, BeachPosition } from '@src/services/forecast';
+import { Beach, BeachPosition } from '@src/database/models/beach';
+import forecastService from '@src/services/forecast';
 import stormGlassClient, { StormGlassClient } from '@src/clients/stormGlass';
 import stormGlassNormalizedFixture from '@test/fixtures/stormglass_normalized_response_3_hours.json';
 import { ForecastProcessingError } from '@src/util/errors';
@@ -22,7 +23,6 @@ describe('Forecast Service', () => {
         lng: 151.289824,
         name: 'Manly',
         position: BeachPosition.E,
-        user: 'some-id',
       },
     ];
 
@@ -107,7 +107,6 @@ describe('Forecast Service', () => {
         lng: 151.289824,
         name: 'Manly',
         position: BeachPosition.E,
-        user: 'some-id',
       },
     ];
 

@@ -2,7 +2,7 @@ import nodeConfig from 'config';
 
 const config = {
   database: {
-    url: nodeConfig.get<string>('database.url')
+    url: nodeConfig.get<string>('database.url'),
   },
   services: {
     stormGlass: {
