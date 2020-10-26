@@ -1,15 +1,9 @@
 import nodeConfig from 'config';
 
-interface ConfigSchema {
-  services: {
-    stormGlass: {
-      apiUrl: string;
-      apiToken: string;
-    };
-  };
-}
-
-const config: ConfigSchema = {
+const config = {
+  database: {
+    url: nodeConfig.get<string>('database.url')
+  },
   services: {
     stormGlass: {
       apiUrl: nodeConfig.get<string>('stormGlass.apiUrl'),
