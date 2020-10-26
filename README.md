@@ -11,3 +11,4 @@ This project was made for studying purposes, and it's based on the free course b
 * NodeJS (>= 12.0.0)  
 * TypeScript  
 * Jest  
+* Mongoose
