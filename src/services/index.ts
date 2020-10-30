@@ -1,10 +1,11 @@
 import forecastService from './forecast';
-import * as authService from './auth';
+import authService from './auth';
 import { stormGlass } from '@src/clients';
 
+const auth = authService();
 const forecast = forecastService(stormGlass);
 
 export {
-  authService,
+  auth as authService,
   forecast as forecastService,
 };

@@ -8,5 +8,6 @@ const routes = Router();
 routes.get('/forecast', forecastController.getForecastForLoggedUser);
 routes.post('/beaches', beachesController.createBeach);
 routes.post('/users', usersController.create);
+routes.post('/users/authenticate', usersController.authenticate);
 
 export default routes;
