@@ -1,21 +1,32 @@
 import nock from 'nock';
-import { Beach } from '@src/database/models';
+import { Beach, User } from '@src/database/models';
 import { BeachPosition } from '@src/database/models/beach';
 import stormGlassFixture from '@test/fixtures/stormglass_weather_3_hours.json';
 import apiForecastFixture from '@test/fixtures/api_forecast_response_1_beach.json';
+import { authService } from '@src/services';
 
 describe('Beach forecast functional tests', () => {
+  const defaultUser = {
+    name: 'John Doe',
+    email: 'john@mail.com',
+    password: '1234'
+  };
+  let token: string;
+
   beforeEach(async () => {
     await Beach.deleteMany({});
+    await User.deleteMany({});
 
+    const user = await new User(defaultUser).save();
     const defaultBeach = {
       lat: -33.792726,
       lng: 151.289824,
       name: 'Manly',
       position: BeachPosition.E,
+      user: user.id,
     };
-    const beach = new Beach(defaultBeach);
-    await beach.save();
+    await new Beach(defaultBeach).save();
+    token = authService.generateToken(user.toJSON());
   });
 
   it('should return a forecast with just a few times', async () => {
@@ -35,7 +46,9 @@ describe('Beach forecast functional tests', () => {
       })
       .reply(200, stormGlassFixture);
 
-    const { body, status } = await global.testRequest.get('/forecast');
+      const { body, status } = await global.testRequest
+        .get('/forecast')
+        .set({ 'x-access-token': token });
 
     expect(status).toBe(200);
     expect(body).toStrictEqual(apiForecastFixture);
@@ -56,7 +69,9 @@ describe('Beach forecast functional tests', () => {
       })
       .replyWithError('Something went wrong');
 
-    const { status } = await global.testRequest.get(`/forecast`);
+    const { status } = await global.testRequest
+      .get(`/forecast`)
+      .set({ 'x-access-token': token });
 
     expect(status).toBe(500);
   });

@@ -5,7 +5,10 @@ import sendCreateUpdateError from '../util/send-controller-errors';
 export default {
   async createBeach(req: Request, res: Response): Promise<void> {
     try {
-      const beach = new Beach(req.body);
+      const beach = new Beach({
+        ...req.body,
+        user: req.decoded?.id,
+      });
       const result = await beach.save();
       res.status(201).send(result);
     } catch (err) {

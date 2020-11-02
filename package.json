@@ -7,7 +7,7 @@
     "build": "rm -rf ./dist && tsc",
     "prestart": "yarn build",
     "start": "node dist/src/index.js",
-    "start:dev": "ts-node-dev --respawn src/index.ts",
+    "start:dev": "ts-node-dev --transpile-only src/index.ts",
     "test": "yarn test:unit && yarn test:functional",
     "test:functional": "jest --projects ./test --runInBand",
     "test:unit": "jest",
