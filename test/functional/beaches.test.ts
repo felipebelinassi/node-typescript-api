@@ -1,7 +1,20 @@
-import { Beach } from '@src/database/models';
+import { Beach, User } from '@src/database/models';
+import { authService } from '@src/services';
 
 describe('Beaches functional tests', () => {
-  beforeAll(async () => await Beach.deleteMany({}));
+  const defaultUser = {
+    name: 'John Doe',
+    email: 'john@mail.com',
+    password: '1234'
+  };
+  let token: string;
+
+  beforeEach(async () => {
+    await Beach.deleteMany({});
+    await User.deleteMany({});
+    const user = await new User(defaultUser).save();
+    token = authService.generateToken(user.toJSON());
+  });
 
   describe('Create beach', () => {
     it('should create a beach with success', async () => {
@@ -12,7 +25,10 @@ describe('Beaches functional tests', () => {
         position: 'E',
       };
 
-      const response = await global.testRequest.post('/beaches').send(newBeach);
+      const response = await global.testRequest
+        .post('/beaches')
+        .set({ 'x-access-token': token })
+        .send(newBeach);
       expect(response.status).toBe(201);
       expect(response.body).toEqual(expect.objectContaining(newBeach));
     });
@@ -28,7 +44,10 @@ describe('Beaches functional tests', () => {
       const expectedErrorMessage =
         'Beach validation failed: lat: Cast to Number failed for value "invalid_string" at path "lat"';
 
-      const response = await global.testRequest.post('/beaches').send(newBeach);
+      const response = await global.testRequest
+        .post('/beaches')
+        .set({ 'x-access-token': token })
+        .send(newBeach);
       expect(response.status).toBe(422);
       expect(response.body).toEqual({
         code: 422,
