@@ -4,7 +4,7 @@
   "description": "NodeJS TypeScript API",
   "main": "index.js",
   "scripts": {
-    "build": "rm -rf ./dist && tsc",
+    "build": "tsc",
     "prestart": "yarn build",
     "start": "node dist/src/index.js",
     "start:dev": "ts-node-dev --transpile-only src/index.ts",

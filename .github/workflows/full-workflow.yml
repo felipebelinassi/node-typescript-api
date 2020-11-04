@@ -36,3 +36,4 @@ jobs:
           heroku_api_key: ${{secrets.HEROKU_API_KEY}}
           heroku_app_name: belinassi-surf-forecast
           heroku_email: felipebelinassi@gmail.com
+          branch: main
