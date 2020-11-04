@@ -30,3 +30,9 @@ jobs:
 
       - name: Run all tests
         run: yarn test
+
+      - uses: akhileshns/heroku-deploy@v3.6.8
+        with:
+          heroku_api_key: ${{secrets.HEROKU_API_KEY}}
+          heroku_app_name: belinassi-surf-forecast
+          heroku_email: felipebelinassi@gmail.com
