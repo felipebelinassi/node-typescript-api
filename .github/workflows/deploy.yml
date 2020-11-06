@@ -28,6 +28,9 @@ jobs:
         with:
           mongodb-version: ${{ matrix.mongodb-version }}
 
+      - name: Install dependencies
+        run: yarn --frozen-lockfile
+
       - name: Run lint
         run: yarn lint
 
