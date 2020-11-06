@@ -2,10 +2,11 @@
   "name": "typescript-api",
   "version": "1.0.0",
   "description": "NodeJS TypeScript API",
-  "main": "index.js",
+  "main": "dist/src/index.js",
   "scripts": {
+    "build": "rm -rf ./dist && tsc",
+    "prestart": "yarn build",
     "start": "node dist/src/index.js",
-    "postinstall": "rm -rf ./dist && tsc",
     "start:dev": "ts-node-dev --transpile-only src/index.ts",
     "test": "yarn test:unit && yarn test:functional",
     "test:functional": "jest --projects ./test --runInBand",
