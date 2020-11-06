@@ -1,6 +1,9 @@
-name: Complete Workflow
+name: Deploy Application
 
-on: ['push']
+on:
+  push:
+    branches:
+      - master
 
 jobs:
   build:
@@ -25,8 +28,8 @@ jobs:
         with:
           mongodb-version: ${{ matrix.mongodb-version }}
 
-      - name: Install dependencies
-        run: yarn --frozen-lockfile
+      - name: Run lint
+        run: yarn lint
 
       - name: Run all tests
         run: yarn test
