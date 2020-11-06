@@ -1,7 +1,7 @@
 export default {
   port: '3000',
   database: {
-    url: 'mongodb://localhost:27107/surf-forecast'
+    url: 'mongodb://localhost:27017/surf-forecast'
   },
   auth: {
     key: 'some-key',

@@ -1,5 +1,5 @@
 {
-  "port": "APP_PORT",
+  "port": "PORT",
   "database": {
     "url": "MONGODB_URL"
   },
