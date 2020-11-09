@@ -12,8 +12,8 @@ app.use(routes);
 
 export const start = (port: string | number): Server =>
   app.listen(port, async () => {
-    logger.info(`Application listening at port ${port}`);
     await database.connect();
+    logger.info(`Application listening at port ${port}`);
   });
 
 export const close = async (server: Server): Promise<void> => {
