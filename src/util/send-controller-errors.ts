@@ -2,6 +2,7 @@ import { CustomValidation } from '@src/database/models/user';
 import logger from '@src/logger';
 import { Response } from 'express';
 import mongoose from 'mongoose';
+import ApiError, { APIError } from './errors/api-error';
 
 interface CustomError {
   code: number;
@@ -22,18 +23,22 @@ const handleClientErrors = (
   return { code: 422, error: err.message };
 };
 
-const sendCreateUpdateError = (
+export const sendCreateUpdateError = (
   res: Response,
   err: mongoose.Error.ValidationError | Error
 ): void => {
   if (err instanceof mongoose.Error.ValidationError) {
     const clientErrors = handleClientErrors(err);
     const { code, error } = clientErrors;
-    res.status(code).send({ code, error });
+    const customError = { code, message: error };
+    res.status(code).send(ApiError.format(customError));
   } else {
     logger.error(err);
-    res.status(500).send({ code: 500, error: 'Something went wrong' });
+    const customError = { code: 500, message: 'Something went wrong' };
+    res.status(500).send(ApiError.format(customError));
   }
 };
 
-export default sendCreateUpdateError;
+export const sendErrorResponse = (res: Response, err: APIError): Response => {
+  return res.status(err.code).send(ApiError.format(err));
+};

@@ -2,6 +2,7 @@ import { Request, Response } from 'express';
 import { forecastService } from '@src/services';
 import { Beach } from '@src/database/models';
 import logger from '@src/logger';
+import { sendErrorResponse } from '@src/util/send-controller-errors';
 
 export default {
   async getForecastForLoggedUser(req: Request, res: Response): Promise<void> {
@@ -14,7 +15,8 @@ export default {
       res.status(200).send(forecastData);
     } catch (err) {
       logger.error(err);
-      res.status(500).send({ error: 'Something went wrong' });
+      const customError = { code: 500, message: 'Something went wrong' };
+      sendErrorResponse(res, customError);
     }
   },
 };

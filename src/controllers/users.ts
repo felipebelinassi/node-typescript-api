@@ -1,6 +1,9 @@
 import { Request, Response } from 'express';
 import { User } from '@src/database/models';
-import sendCreateUpdateError from '../util/send-controller-errors';
+import {
+  sendCreateUpdateError,
+  sendErrorResponse,
+} from '../util/send-controller-errors';
 import { authService } from '@src/services';
 
 export default {
@@ -18,17 +21,19 @@ export default {
     const { email, password } = req.body;
     const user = await User.findOne({ email });
     if (!user) {
-      return res.status(401).send({
+      const customError = {
         code: 401,
-        error: 'User not found',
-      });
+        message: 'User not found',
+      };
+      return sendErrorResponse(res, customError);
     }
 
     if (!(await authService.comparePasswords(password, user.password))) {
-      return res.status(401).send({
+      const customError = {
         code: 401,
-        error: 'Password does not match',
-      });
+        message: 'Password does not match',
+      };
+      return sendErrorResponse(res, customError);
     }
 
     const token = authService.generateToken(user.toJSON());
