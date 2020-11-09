@@ -1,6 +1,7 @@
 import '../util/module-alias';
 import express from 'express';
 import { Server } from 'http';
+import logger from '../logger';
 import routes from '../routes';
 import * as database from '../database';
 
@@ -11,7 +12,7 @@ app.use(routes);
 
 export const start = (port: string | number): Server =>
   app.listen(port, async () => {
-    console.log(`Application listening at port ${port}`);
+    logger.info(`Application listening at port ${port}`);
     await database.connect();
   });
 

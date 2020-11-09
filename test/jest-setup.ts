@@ -1,4 +1,4 @@
-import * as server from '@src/server';
+import * as server from '@src/server/app';
 import { Server } from 'http';
 import supertest from 'supertest';
 

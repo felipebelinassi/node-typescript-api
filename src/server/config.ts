@@ -2,6 +2,10 @@ import nodeConfig from 'config';
 
 const config = {
   port: nodeConfig.get<string>('port'),
+  logger: {
+    enabled: nodeConfig.get<boolean>('logger.enabled'),
+    level: nodeConfig.get<string>('logger.level'),
+  },
   database: {
     url: nodeConfig.get<string>('database.url'),
   },

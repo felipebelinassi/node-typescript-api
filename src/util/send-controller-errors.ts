@@ -1,4 +1,5 @@
 import { CustomValidation } from '@src/database/models/user';
+import logger from '@src/logger';
 import { Response } from 'express';
 import mongoose from 'mongoose';
 
@@ -24,6 +25,7 @@ const sendCreateUpdateError = (res: Response, err: mongoose.Error.ValidationErro
     const { code, error } = clientErrors;
     res.status(code).send({ code, error });
   } else {
+    logger.error(err);
     res.status(500).send({ code: 500, error: 'Something went wrong' });
   }
 }

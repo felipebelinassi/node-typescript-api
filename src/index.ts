@@ -1,4 +1,4 @@
-import * as server from './server';
+import * as server from './server/app';
 import config from './server/config';
 
 (async (): Promise<void> => {
