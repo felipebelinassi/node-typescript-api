@@ -13,7 +13,6 @@ export const connect = async (): Promise<Mongoose> => {
     logger.error('Mongoose failed to connect', err);
     throw new Error(err);
   }
-}
-  
+};
 
 export const close = (): Promise<void> => mongoose.connection.close();

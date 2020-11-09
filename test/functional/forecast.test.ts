@@ -9,7 +9,7 @@ describe('Beach forecast functional tests', () => {
   const defaultUser = {
     name: 'John Doe',
     email: 'john@mail.com',
-    password: '1234'
+    password: '1234',
   };
   let token: string;
 
@@ -46,9 +46,9 @@ describe('Beach forecast functional tests', () => {
       })
       .reply(200, stormGlassFixture);
 
-      const { body, status } = await global.testRequest
-        .get('/forecast')
-        .set({ 'x-access-token': token });
+    const { body, status } = await global.testRequest
+      .get('/forecast')
+      .set({ 'x-access-token': token });
 
     expect(status).toBe(200);
     expect(body).toStrictEqual(apiForecastFixture);

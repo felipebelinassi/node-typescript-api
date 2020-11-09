@@ -11,10 +11,10 @@ export const authMiddleware = (
     const decoded = authService.decodeToken(token as string);
     req.decoded = decoded;
     next();
- } catch(err) {
-   res.status?.(401).send({
-     code: 401,
-     error: err.message,
-   });
- }
-}
+  } catch (err) {
+    res.status?.(401).send({
+      code: 401,
+      error: err.message,
+    });
+  }
+};

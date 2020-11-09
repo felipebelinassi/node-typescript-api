@@ -5,7 +5,7 @@ describe('Beaches functional tests', () => {
   const defaultUser = {
     name: 'John Doe',
     email: 'john@mail.com',
-    password: '1234'
+    password: '1234',
   };
   let token: string;
 

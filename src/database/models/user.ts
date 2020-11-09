@@ -6,11 +6,11 @@ export interface User {
   _id?: string;
   name: string;
   email: string;
-  password:string;
+  password: string;
 }
 
 export enum CustomValidation {
-  DUPLICATED = 'DUPLICATED'
+  DUPLICATED = 'DUPLICATED',
 }
 
 interface UserModel extends Omit<User, '_id'>, Document {}
@@ -21,7 +21,7 @@ const schema = new mongoose.Schema(
     email: {
       type: String,
       required: true,
-      unique: [true, 'Email must be unique']
+      unique: [true, 'Email must be unique'],
     },
     password: { type: String, required: true },
   },
@@ -36,12 +36,16 @@ const schema = new mongoose.Schema(
   }
 );
 
-schema.path('email').validate(async (email: string) => {
-  const emailCount = await mongoose.models.User.countDocuments({ email });
-  return !emailCount;
-}, 'already exists in the database', CustomValidation.DUPLICATED);
+schema.path('email').validate(
+  async (email: string) => {
+    const emailCount = await mongoose.models.User.countDocuments({ email });
+    return !emailCount;
+  },
+  'already exists in the database',
+  CustomValidation.DUPLICATED
+);
 
-schema.pre<UserModel>('save', async function(): Promise<void> {
+schema.pre<UserModel>('save', async function (): Promise<void> {
   if (!this.password || !this.isModified('password')) {
     return;
   }
@@ -50,7 +54,7 @@ schema.pre<UserModel>('save', async function(): Promise<void> {
     const hashedPassword = await authService.hashPassword(this.password);
     this.password = hashedPassword;
   } catch (err) {
-    logger.error(`Error hashing password for the user ${this.name}`)
+    logger.error(`Error hashing password for the user ${this.name}`);
   }
 });
 

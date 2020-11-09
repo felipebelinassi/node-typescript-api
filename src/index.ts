@@ -17,27 +17,29 @@ process.on('unhandledRejection', (reason, promise) => {
 process.on('unhandledRejection', (err) => {
   logger.error(`App exiting due to unhandled exception: ${err}`);
   process.exit(ExitStatus.FAILURE);
-})
+});
 
 const exitProcessWithError = (err: Error) => {
   logger.error(`App exited with error: ${err}`);
   process.exit(ExitStatus.FAILURE);
-}
+};
 
 (async (): Promise<void> => {
   try {
     const appServer = server.start(config.port);
 
     const exitSignals: NodeJS.Signals[] = ['SIGINT', 'SIGTERM', 'SIGQUIT'];
-    exitSignals.map((sig) => process.on(sig, async () => {
-      try {
-        await server.close(appServer);
-        logger.info('App exited with success');
-        process.exit(ExitStatus.SUCCESS);
-      } catch (err) {
-        exitProcessWithError(err);
-      }
-    }))
+    exitSignals.map((sig) =>
+      process.on(sig, async () => {
+        try {
+          await server.close(appServer);
+          logger.info('App exited with success');
+          process.exit(ExitStatus.SUCCESS);
+        } catch (err) {
+          exitProcessWithError(err);
+        }
+      })
+    );
   } catch (err) {
     exitProcessWithError(err);
   }

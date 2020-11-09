@@ -6,7 +6,11 @@ import usersController from './controllers/users';
 
 const routes = Router();
 
-routes.get('/forecast', authMiddleware, forecastController.getForecastForLoggedUser);
+routes.get(
+  '/forecast',
+  authMiddleware,
+  forecastController.getForecastForLoggedUser
+);
 routes.post('/beaches', authMiddleware, beachesController.createBeach);
 routes.post('/users', usersController.create);
 routes.post('/users/authenticate', usersController.authenticate);
