@@ -5,7 +5,7 @@ describe('Beaches functional tests', () => {
   const defaultUser = {
     name: 'John Doe',
     email: 'john@mail.com',
-    password: '1234'
+    password: '1234',
   };
   let token: string;
 
@@ -51,7 +51,8 @@ describe('Beaches functional tests', () => {
       expect(response.status).toBe(422);
       expect(response.body).toEqual({
         code: 422,
-        error: expectedErrorMessage,
+        error: 'Unprocessable Entity',
+        message: expectedErrorMessage,
       });
     });
   });

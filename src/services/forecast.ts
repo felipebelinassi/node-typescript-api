@@ -1,6 +1,7 @@
 import { Beach } from '@src/database/models/beach';
 import { ForecastPoint, StormGlassClient } from '@src/clients/stormGlass';
 import { ForecastProcessingError } from '@src/util/errors';
+import logger from '@src/logger';
 
 export interface BeachForecast extends Omit<Beach, 'user'>, ForecastPoint {}
 
@@ -49,8 +50,9 @@ const mapForecastByTime = (forecast: BeachForecast[]): TimeForecast[] => {
 
 const forecast = (stormGlass: StormGlassClient): ForecastService => {
   const processBeachesForecast = async (beaches: Beach[]) => {
-    const pointsWithCorrectedSources: BeachForecast[] = [];
+    logger.info(`Preparing the forecast for ${beaches.length} beaches`);
 
+    const pointsWithCorrectedSources: BeachForecast[] = [];
     try {
       for (const beach of beaches) {
         const points = await stormGlass.fetchPoints(beach.lat, beach.lng);
@@ -60,6 +62,7 @@ const forecast = (stormGlass: StormGlassClient): ForecastService => {
 
       return mapForecastByTime(pointsWithCorrectedSources);
     } catch (err) {
+      logger.error(err);
       throw new ForecastProcessingError(err.message);
     }
   };

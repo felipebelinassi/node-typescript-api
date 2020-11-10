@@ -11,35 +11,30 @@ export interface DecodedUser extends Omit<User, '_id'> {
 
 interface AuthService {
   hashPassword: (password: string, salt?: number) => Promise<string>;
-  comparePasswords: (password: string, hashPassword: string) => Promise<boolean>;
+  comparePasswords: (
+    password: string,
+    hashPassword: string
+  ) => Promise<boolean>;
   generateToken: (payload: Record<string, unknown>) => string;
   decodeToken: (token: string) => DecodedUser;
 }
 
 const authService = (): AuthService => {
-  const hashPassword = async (
-    password: string,
-    salt = 10
-  ) => {
+  const hashPassword = async (password: string, salt = 10) => {
     return await bcrypt.hash(password, salt);
   };
 
-  const comparePasswords = async (
-    password: string,
-    hashPassword: string,
-  ) => {
+  const comparePasswords = async (password: string, hashPassword: string) => {
     return await bcrypt.compare(password, hashPassword);
   };
 
-  const generateToken = (
-    payload: Record<string, unknown>,
-  ) => {
+  const generateToken = (payload: Record<string, unknown>) => {
     return jwt.sign(payload, auth.key, { expiresIn: auth.tokenExpiresIn });
-  }
+  };
 
   const decodeToken = (token: string): DecodedUser => {
     return jwt.verify(token, auth.key) as DecodedUser;
-  }
+  };
 
   return {
     hashPassword,

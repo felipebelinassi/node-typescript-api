@@ -1,5 +1,9 @@
 {
   "port": "PORT",
+  "logger": {
+    "enabled": "LOGGER_ENABLED",
+    "level": "LOGGER_LEVEL"
+  },
   "database": {
     "url": "MONGODB_URL"
   },

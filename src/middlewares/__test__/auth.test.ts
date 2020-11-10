@@ -20,7 +20,7 @@ describe('Auth middleware', () => {
     const reqFake = {
       headers: {
         'x-access-token': 'invalid token',
-      }
+      },
     };
     const sendMock = jest.fn();
     const resFake = {
@@ -34,13 +34,13 @@ describe('Auth middleware', () => {
     expect(resFake.status).toHaveBeenCalledWith(401);
     expect(sendMock).toHaveBeenCalledWith({
       code: 401,
-      error: 'jwt malformed'
+      error: 'jwt malformed',
     });
   });
 
   it('should return UNAUTHORIZED if no token is informed', () => {
     const reqFake = {
-      headers: {}
+      headers: {},
     };
     const sendMock = jest.fn();
     const resFake = {
@@ -54,7 +54,7 @@ describe('Auth middleware', () => {
     expect(resFake.status).toHaveBeenCalledWith(401);
     expect(sendMock).toHaveBeenCalledWith({
       code: 401,
-      error: 'jwt must be provided'
+      error: 'jwt must be provided',
     });
   });
-})
+});

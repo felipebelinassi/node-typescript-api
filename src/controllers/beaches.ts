@@ -1,6 +1,6 @@
 import { Beach } from '@src/database/models';
 import { Request, Response } from 'express';
-import sendCreateUpdateError from '../util/send-controller-errors';
+import { sendCreateUpdateError } from '../util/send-controller-errors';
 
 export default {
   async createBeach(req: Request, res: Response): Promise<void> {

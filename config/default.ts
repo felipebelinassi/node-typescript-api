@@ -1,5 +1,9 @@
 export default {
   port: '3000',
+  logger: {
+    enabled: true,
+    level: 'info'
+  },
   database: {
     url: 'mongodb://localhost:27017/surf-forecast'
   },

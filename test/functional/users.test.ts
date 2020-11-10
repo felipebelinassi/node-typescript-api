@@ -1,5 +1,5 @@
-import { User } from "@src/database/models";
-import { authService } from '@src/services'
+import { User } from '@src/database/models';
+import { authService } from '@src/services';
 
 describe('Users functional test', () => {
   beforeEach(async () => {
@@ -16,11 +16,15 @@ describe('Users functional test', () => {
 
       const response = await global.testRequest.post('/users').send(newUser);
       expect(response.status).toBe(201);
-      await expect(authService.comparePasswords(newUser.password, response.body.password))
-        .resolves.toBeTruthy();
-      expect(response.body).toEqual(expect.objectContaining({
-        ...newUser, password: expect.any(String),
-      }));
+      await expect(
+        authService.comparePasswords(newUser.password, response.body.password)
+      ).resolves.toBeTruthy();
+      expect(response.body).toEqual(
+        expect.objectContaining({
+          ...newUser,
+          password: expect.any(String),
+        })
+      );
     });
 
     it('should return 422 when there is a validation error', async () => {
@@ -33,7 +37,8 @@ describe('Users functional test', () => {
       expect(response.status).toBe(422);
       expect(response.body).toEqual({
         code: 422,
-        error: 'User validation failed: name: Path `name` is required.',
+        error: 'Unprocessable Entity',
+        message: 'User validation failed: name: Path `name` is required.',
       });
     });
 
@@ -49,7 +54,9 @@ describe('Users functional test', () => {
       expect(response.status).toBe(409);
       expect(response.body).toEqual({
         code: 409,
-        error: 'User validation failed: email: already exists in the database',
+        error: 'Conflict',
+        message:
+          'User validation failed: email: already exists in the database',
       });
     });
   });
@@ -67,16 +74,18 @@ describe('Users functional test', () => {
         .post('/users/authenticate')
         .send({ email: newUser.email, password: newUser.password });
 
-      expect(response.body).toEqual(expect.objectContaining({
-        token: expect.any(String),
-      }));
+      expect(response.body).toEqual(
+        expect.objectContaining({
+          token: expect.any(String),
+        })
+      );
     });
 
     it('should return UNAUTHORIZED if the user given email is not found', async () => {
       const response = await global.testRequest
         .post('/users/authenticate')
         .send({ email: 'some-email@mail.com', password: '1234' });
-      
+
       expect(response.status).toBe(401);
     });
 
@@ -84,8 +93,8 @@ describe('Users functional test', () => {
       const response = await global.testRequest
         .post('/users/authenticate')
         .send({ email: 'some-email@mail.com', password: '1234' });
-      
+
       expect(response.status).toBe(401);
-    })
+    });
   });
 });
