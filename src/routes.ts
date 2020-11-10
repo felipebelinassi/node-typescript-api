@@ -14,5 +14,6 @@ routes.get(
 routes.post('/beaches', authMiddleware, beachesController.createBeach);
 routes.post('/users', usersController.create);
 routes.post('/users/authenticate', usersController.authenticate);
+routes.get('/users/me', authMiddleware, usersController.getUserInfo);
 
 export default routes;
