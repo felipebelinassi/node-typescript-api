@@ -39,4 +39,17 @@ export default {
     const token = authService.generateToken(user.toJSON());
     return res.status(200).send({ ...user.toJSON(), token });
   },
+
+  async getUserInfo(req: Request, res: Response): Promise<Response> {
+    const email = req.decoded?.email;
+    const user = await User.findOne({ email });
+    if (!user) {
+      const customError = {
+        code: 404,
+        message: 'User not found',
+      };
+      return sendErrorResponse(res, customError);
+    }
+    return res.send({ user });
+  }
 };
