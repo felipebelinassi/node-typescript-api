@@ -1,43 +1,120 @@
-import { Beach, BeachPosition } from '@src/database/models/beach';
+import { Beach, GeoPosition } from '@src/database/models/beach';
 import { ratingService } from '@src/services';
 
 describe('Rating Service', () => {
-  const defaultBeach: Beach = {
+  const beach: Beach = {
     lat: -33.792726,
     lng: 151.289824,
     name: 'Manly',
-    position: BeachPosition.E,
+    position: GeoPosition.E,
     user: 'fake-id',
   };
 
   describe('Calculate rating for a given point', () => {
-    // TODO:
+    const defaultPoint = {
+      swellDirection: 110,
+      swellHeight: 0.1,
+      swellPeriod: 5,
+      time: 'test',
+      waveDirection: 110,
+      waveHeight: 0.1,
+      windDirection: 100,
+      windSpeed: 100,
+    };
+
+    it ('should get a rating less than 1 for a poor point', () => {
+      const rating = ratingService.getRatingForPoint(beach, defaultPoint);
+      expect(rating).toBe(1);
+    });
+
+    it('should get a rating of 1 for an ok point', () => {
+      const pointData = {
+        swellHeight: 0.4,
+      };
+      const point = { ...defaultPoint, ...pointData };
+      const rating = ratingService.getRatingForPoint(beach, point);
+      expect(rating).toBe(1);
+    });
+
+    it('should get a rating of 3 for a point with offshore winds and a half overhead height', () => {
+      const point = {
+        ...defaultPoint,
+        swellHeight: 0.7,
+        windDirection: 250,
+      };
+      const rating = ratingService.getRatingForPoint(beach, point);
+      expect(rating).toBe(3);
+    });
+
+    it('should get a rating of 4 for a point with offshore winds, half overhead high swell and good interval', () => {
+      const point = {
+        ...defaultPoint,
+        swellHeight: 0.7,
+        swellPeriod: 12,
+        windDirection: 250,
+      };
+      const rating = ratingService.getRatingForPoint(beach, point);
+      expect(rating).toBe(4);
+    });
+
+    it('should get a rating of 4 for a point with offshore winds, shoulder high swell and good interval', () => {
+      const point = {
+        ...defaultPoint,
+        swellHeight: 1.5,
+        swellPeriod: 12,
+        windDirection: 250,
+      };
+      const rating = ratingService.getRatingForPoint(beach, point);
+      expect(rating).toBe(4);
+    });
+
+    it('should get a rating of 5 classic day!', () => {
+      const point = {
+        ...defaultPoint,
+        swellHeight: 2.5,
+        swellPeriod: 16,
+        windDirection: 250,
+      };
+      const rating = ratingService.getRatingForPoint(beach, point);
+      expect(rating).toBe(5);
+    });
+
+    it('should get a rating of 4 a good condition but with crossshore winds', () => {
+      const point = {
+        ...defaultPoint,
+        swellHeight: 2.5,
+        swellPeriod: 16,
+        windDirection: 130,
+      };
+      const rating = ratingService.getRatingForPoint(beach, point);
+      expect(rating).toBe(4);
+    });
   });
 
   describe('Get rating based on wind and wave positions', () => {
     it('should get rating 1 for a beach with onshore winds', () => {
       const rating = ratingService.getRatingByWindAndWavePositions(
-        BeachPosition.E,
-        BeachPosition.E,
-        defaultBeach.position,
+        GeoPosition.E,
+        GeoPosition.E,
+        beach.position,
       );
       expect(rating).toBe(1);
     });
 
     it('should get rating 3 for a beach with cross winds', () => {
       const rating = ratingService.getRatingByWindAndWavePositions(
-        BeachPosition.E,
-        BeachPosition.S,
-        defaultBeach.position,
+        GeoPosition.E,
+        GeoPosition.S,
+        beach.position,
       );
       expect(rating).toBe(3);
     });
 
     it('should get rating 5 for a beach with offshore winds', () => {
       const rating = ratingService.getRatingByWindAndWavePositions(
-        BeachPosition.E,
-        BeachPosition.W,
-        defaultBeach.position,
+        GeoPosition.E,
+        GeoPosition.W,
+        beach.position,
       );
       expect(rating).toBe(5);
     });
@@ -90,27 +167,27 @@ describe('Rating Service', () => {
   describe('Get position on points location', () => {
     it('should get the poimt based on a east location', () => {
       const respnse = ratingService.getPositionByLocation(92);
-      expect(respnse).toBe(BeachPosition.E);
+      expect(respnse).toBe(GeoPosition.E);
     });
 
     it('should get the poimt based on a north location 1', () => {
       const respnse = ratingService.getPositionByLocation(360);
-      expect(respnse).toBe(BeachPosition.N);
+      expect(respnse).toBe(GeoPosition.N);
     });
 
     it('should get the poimt based on a north location 2', () => {
       const respnse = ratingService.getPositionByLocation(40);
-      expect(respnse).toBe(BeachPosition.N);
+      expect(respnse).toBe(GeoPosition.N);
     });
 
     it('should get the poimt based on a south location', () => {
       const respnse = ratingService.getPositionByLocation(200);
-      expect(respnse).toBe(BeachPosition.S);
+      expect(respnse).toBe(GeoPosition.S);
     });
 
     it('should get the poimt based on a west location', () => {
       const respnse = ratingService.getPositionByLocation(300);
-      expect(respnse).toBe(BeachPosition.W);
+      expect(respnse).toBe(GeoPosition.W);
     });
   });
 });

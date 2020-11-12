@@ -1,14 +1,16 @@
-import { Beach, BeachPosition } from "@src/database/models/beach";
+import { ForecastPoint } from "@src/clients/stormGlass";
+import { Beach, GeoPosition } from "@src/database/models/beach";
 
 interface RatingService {
   getRatingByWindAndWavePositions: (
-    windPos: BeachPosition,
-    wavePos: BeachPosition,
-    beachPos: BeachPosition
+    windPos: GeoPosition,
+    wavePos: GeoPosition,
+    beachPos: GeoPosition
   ) => number;
   getRatingBySwellPeriod: (period: number) => number;
   getRatingBySwellSize: (height: number) => number;
-  getPositionByLocation: (coordinates: number) => BeachPosition;
+  getPositionByLocation: (coordinates: number) => GeoPosition;
+  getRatingForPoint: (beach: Beach, point: ForecastPoint) => number;
 }
 
 const waveHeights = {
@@ -27,31 +29,31 @@ const waveHeights = {
 };
 
 const isWindOffshore = (
-  wavePos: BeachPosition,
-  windPos: BeachPosition,
-  beachPos: BeachPosition
+  wavePos: GeoPosition,
+  windPos: GeoPosition,
+  beachPos: GeoPosition
 ): boolean => {
   return (
-    (wavePos === BeachPosition.N &&
-      windPos === BeachPosition.S &&
-      beachPos === BeachPosition.N) ||
-    (wavePos === BeachPosition.S &&
-      windPos === BeachPosition.N &&
-      beachPos === BeachPosition.S) ||
-    (wavePos === BeachPosition.E &&
-      windPos === BeachPosition.W &&
-      beachPos === BeachPosition.E) ||
-    (wavePos === BeachPosition.W &&
-      windPos === BeachPosition.E &&
-      beachPos === BeachPosition.W)
+    (wavePos === GeoPosition.N &&
+      windPos === GeoPosition.S &&
+      beachPos === GeoPosition.N) ||
+    (wavePos === GeoPosition.S &&
+      windPos === GeoPosition.N &&
+      beachPos === GeoPosition.S) ||
+    (wavePos === GeoPosition.E &&
+      windPos === GeoPosition.W &&
+      beachPos === GeoPosition.E) ||
+    (wavePos === GeoPosition.W &&
+      windPos === GeoPosition.E &&
+      beachPos === GeoPosition.W)
   );
 }
 
 const ratingService = (): RatingService => {
   const getRatingByWindAndWavePositions = (
-    wavePos: BeachPosition,
-    windPos: BeachPosition,
-    beachPos: BeachPosition
+    wavePos: GeoPosition,
+    windPos: GeoPosition,
+    beachPos: GeoPosition
   ): number => {
     if (wavePos === windPos) {
       return 1;
@@ -75,12 +77,27 @@ const ratingService = (): RatingService => {
     return 5;
   }
 
-  const getPositionByLocation = (coordinates: number): BeachPosition => {
-    if (coordinates < 50) return BeachPosition.N;
-    if (coordinates < 120) return BeachPosition.E;
-    if (coordinates < 220) return BeachPosition.S;
-    if (coordinates < 310) return BeachPosition.W;
-    return BeachPosition.N;
+  const getPositionByLocation = (coordinates: number): GeoPosition => {
+    if (coordinates < 50) return GeoPosition.N;
+    if (coordinates < 120) return GeoPosition.E;
+    if (coordinates < 220) return GeoPosition.S;
+    if (coordinates < 310) return GeoPosition.W;
+    return GeoPosition.N;
+  }
+
+  const getRatingForPoint = (beach: Beach, point: ForecastPoint): number => {
+    const swellDirection = getPositionByLocation(point.swellDirection);
+    const windDirection = getPositionByLocation(point.windDirection);
+    const windAndWaveRating = getRatingByWindAndWavePositions(
+      swellDirection,
+      windDirection,
+      beach.position,
+    );
+    const swellHeightRating = getRatingBySwellSize(point.swellHeight);
+    const swellPeriodRating = getRatingBySwellPeriod(point.swellPeriod);
+    
+    const finalRating = (windAndWaveRating + swellHeightRating + swellPeriodRating) / 3;
+    return Math.round(finalRating);
   }
 
   return {
@@ -88,6 +105,7 @@ const ratingService = (): RatingService => {
     getRatingBySwellPeriod,
     getRatingBySwellSize,
     getPositionByLocation,
+    getRatingForPoint,
   };
 };
 
