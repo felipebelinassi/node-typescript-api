@@ -4,7 +4,9 @@ import { ForecastProcessingError } from '@src/util/errors';
 import { CreateRatingService, RatingService } from './rating';
 import logger from '@src/logger';
 
-export interface BeachForecast extends Omit<Beach, 'user'>, ForecastPoint {}
+export interface BeachForecast extends Omit<Beach, 'user'>, ForecastPoint {
+  rating: number;
+}
 
 export interface TimeForecast {
   time: string;
@@ -50,20 +52,32 @@ const mapForecastByTime = (forecast: BeachForecast[]): TimeForecast[] => {
   }, forecastByTime);
 };
 
+const orderForecastByRating = (forecast: BeachForecast[]) => {
+  return forecast.sort((a, b) => b.rating - a.rating);
+}
+
 const forecast = (stormGlass: StormGlassClient, ratingService: CreateRatingService): ForecastService => {
+  const calculateRating = async (beaches: Beach[]) => {
+    const pointsWithCorrectedSources: BeachForecast[] = [];
+    for (const beach of beaches) {
+      const rating = ratingService(beach);
+      const points = await stormGlass.fetchPoints(beach.lat, beach.lng);
+      const enrichedBeachData = enrichBeachData(points, beach, rating);
+      pointsWithCorrectedSources.push(...enrichedBeachData);
+    }
+    return pointsWithCorrectedSources;
+  }
+  
   const processBeachesForecast = async (beaches: Beach[]) => {
     logger.info(`Preparing the forecast for ${beaches.length} beaches`);
 
-    const pointsWithCorrectedSources: BeachForecast[] = [];
     try {
-      for (const beach of beaches) {
-        const rating = ratingService(beach);
-        const points = await stormGlass.fetchPoints(beach.lat, beach.lng);
-        const enrichedBeachData = enrichBeachData(points, beach, rating);
-        pointsWithCorrectedSources.push(...enrichedBeachData);
-      }
-
-      return mapForecastByTime(pointsWithCorrectedSources);
+      const beachForecast = await calculateRating(beaches);
+      const timeForecast = mapForecastByTime(beachForecast);
+      return timeForecast.map((item) => ({
+        time: item.time,
+        forecast: orderForecastByRating(item.forecast),
+      }))
     } catch (err) {
       logger.error(err);
       throw new ForecastProcessingError(err.message);
