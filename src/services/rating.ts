@@ -1,17 +1,15 @@
 import { ForecastPoint } from "@src/clients/stormGlass";
 import { Beach, GeoPosition } from "@src/database/models/beach";
 
-interface RatingService {
-  getRatingByWindAndWavePositions: (
-    windPos: GeoPosition,
-    wavePos: GeoPosition,
-    beachPos: GeoPosition
-  ) => number;
+export interface RatingService {
+  getRatingByWindAndWavePositions: (windPos: GeoPosition, wavePos: GeoPosition) => number;
   getRatingBySwellPeriod: (period: number) => number;
   getRatingBySwellSize: (height: number) => number;
   getPositionByLocation: (coordinates: number) => GeoPosition;
-  getRatingForPoint: (beach: Beach, point: ForecastPoint) => number;
+  getRatingForPoint: (point: ForecastPoint) => number;
 }
+
+export type CreateRatingService = (beach: Beach) => RatingService;
 
 const waveHeights = {
   ankleToKnee: {
@@ -49,15 +47,14 @@ const isWindOffshore = (
   );
 }
 
-const ratingService = (): RatingService => {
+const ratingService = (beach: Beach): RatingService => {
   const getRatingByWindAndWavePositions = (
     wavePos: GeoPosition,
     windPos: GeoPosition,
-    beachPos: GeoPosition
   ): number => {
     if (wavePos === windPos) {
       return 1;
-    } else if (isWindOffshore(wavePos, windPos, beachPos)) {
+    } else if (isWindOffshore(wavePos, windPos, beach.position)) {
       return 5;
     }
     return 3;
@@ -85,13 +82,12 @@ const ratingService = (): RatingService => {
     return GeoPosition.N;
   }
 
-  const getRatingForPoint = (beach: Beach, point: ForecastPoint): number => {
+  const getRatingForPoint = (point: ForecastPoint): number => {
     const swellDirection = getPositionByLocation(point.swellDirection);
     const windDirection = getPositionByLocation(point.windDirection);
     const windAndWaveRating = getRatingByWindAndWavePositions(
       swellDirection,
       windDirection,
-      beach.position,
     );
     const swellHeightRating = getRatingBySwellSize(point.swellHeight);
     const swellPeriodRating = getRatingBySwellPeriod(point.swellPeriod);

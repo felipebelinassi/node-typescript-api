@@ -20,7 +20,7 @@ const handleClientErrors = (
     return { code: 409, error: err.message };
   }
 
-  return { code: 422, error: err.message };
+  return { code: 400, error: err.message };
 };
 
 export const sendCreateUpdateError = (
