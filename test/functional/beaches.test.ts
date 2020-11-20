@@ -42,7 +42,7 @@ describe('Beaches functional tests', () => {
       };
 
       const expectedErrorMessage =
-        'Beach validation failed: lat: Cast to Number failed for value "invalid_string" at path "lat"';
+        'request.body.lat should be number';
 
       const response = await global.testRequest
         .post('/beaches')
