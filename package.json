@@ -6,8 +6,8 @@
   "scripts": {
     "build": "rm -rf ./dist && tsc",
     "prestart": "yarn build",
-    "start": "node dist/src/index.js",
-    "start:dev": "ts-node-dev --transpile-only src/index.ts | pino-pretty -c",
+    "start": "node -r dotenv/config dist/src/index.js",
+    "start:dev": "ts-node-dev --transpile-only -r dotenv/config src/index.ts | pino-pretty -c",
     "test": "yarn test:unit && yarn test:functional",
     "test:functional": "jest --projects ./test --runInBand",
     "test:unit": "jest",
@@ -21,6 +21,7 @@
     "bcrypt": "^5.0.0",
     "config": "^3.3.2",
     "cors": "^2.8.5",
+    "dotenv": "^8.2.0",
     "express": "^4.17.1",
     "express-openapi-validator": "^4.7.1",
     "express-pino-logger": "^5.0.0",
