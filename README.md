@@ -12,3 +12,35 @@ This project was made for studying purposes, and it's based on the free course b
 * TypeScript  
 * Jest  
 * Mongoose
+* GitHub Actions
+
+## Getting Started
+
+* Clone the repository:  
+```git clone https://github.com/felipebelinassi/node-typescript-api.git <project_name>```
+
+* Install dependencies:  
+```yarn``` or ```npm install```
+
+* Build and run the project:  
+```yarn start``` or ```npm start```
+
+* Run the project in development mode (using Nodemon):  
+```yarn start:dev```or ```npm run start:dev```
+
+* Run unit and functional tests:**  
+```yarn test``` or ```npm test```
+
+## Documentation
+Project documentation is in the OpenAPI 3.0 standard. You can access the API documentation using the ```/docs``` endpoint after running the project.
+
+## Environment variables  
+This project uses dotenv package to manage environment variables. To set your variables, create a .env file (or just rename the .example.env), which contains all the environments needed to run the application. All variables are **required**.
+
+- *PORT* -> Port where the server will start (Heroku set this environment automatically).  
+- *LOGGER_ENABLED* -> Flag to indicate if application will log messages using Pino logger.  
+- *LOGGER_LEVEL* -> Level to log messages.  
+- *MONGODB_URL* -> MongoDB connection url.  
+- *JWT_SECRET_KEY* -> Secret value that JWT tokens should be signed with.  
+- *STORM_GLASS_API_URL* -> Storm Glass API service base url.  
+- *STORM_GLASS_API_TOKEN* -> Storm Glass service API token.  
