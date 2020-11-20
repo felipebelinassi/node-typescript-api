@@ -28,7 +28,7 @@ This project was made for studying purposes, and it's based on the free course b
 * Run the project in development mode (using Nodemon):  
 ```yarn start:dev```or ```npm run start:dev```
 
-* Run unit and functional tests:**  
+* Run unit and functional tests:  
 ```yarn test``` or ```npm test```
 
 ## Documentation
