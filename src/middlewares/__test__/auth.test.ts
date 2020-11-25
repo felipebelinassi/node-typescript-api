@@ -1,5 +1,5 @@
 import { authService } from '@src/services';
-import { authMiddleware } from '@src/middlewares/auth';
+import authMiddleware from '@src/middlewares/auth';
 
 describe('Auth middleware', () => {
   it('should verify a JWT token and call the next middleware', () => {

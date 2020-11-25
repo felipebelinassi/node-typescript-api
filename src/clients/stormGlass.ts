@@ -1,5 +1,6 @@
 import config from '@src/server/config';
 import * as httpUtil from '@src/util/request';
+import getUnixTimeForAFutureDay from '@src/util/time';
 import { RequestError, ResponseError } from '@src/util/errors';
 
 export interface StormGlassPointSource {
@@ -53,9 +54,10 @@ const isValidPoint = (point: Partial<StormGlassPoint>): boolean =>
 
 const stormGlass = (request: httpUtil.Request): StormGlassClient => {
   const fetchPoints = async (lat: number, lng: number) => {
+    const endTimestamp = getUnixTimeForAFutureDay(1);
     try {
       const response = await request.get<StormGlassForecastResponse>(
-        `${config.services.stormGlass.apiUrl}/weather/point?lat=${lat}&lng=${lng}&params=${apiParams}&source=${apiSource}`,
+        `${config.services.stormGlass.apiUrl}/weather/point?lat=${lat}&lng=${lng}&params=${apiParams}&source=${apiSource}&end=${endTimestamp}`,
         {
           headers: {
             Authorization: config.services.stormGlass.apiToken,
