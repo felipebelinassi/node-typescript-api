@@ -7,8 +7,7 @@ import { sendErrorResponse } from '@src/util/send-controller-errors';
 export default {
   async getForecastForLoggedUser(req: Request, res: Response): Promise<void> {
     try {
-      const userId = req.decoded?.id;
-      const beaches = await Beach.find({ user: userId });
+      const beaches = await Beach.find({ userId: req.decoded?.id });
       const forecastData = await forecastService.processBeachesForecast(beaches);
       res.status(200).send(forecastData);
     } catch (err) {
