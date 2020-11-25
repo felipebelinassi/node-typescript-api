@@ -1,5 +1,5 @@
 # Surf Forecast API w/ NodeJS and TypeScript  
-**[Work in progress]**  
+[![Actions Status](https://github.com/felipebelinassi/surf-forecast-api/workflows/Deploy%20Application/badge.svg)](https://github.com/felipebelinassi/surf-forecast-api/actions)
 
 ## About
 This project was made for studying purposes, and it's based on the free course below, held by Waldemar Neto from Dev Lab.  
@@ -11,8 +11,8 @@ This project was made for studying purposes, and it's based on the free course b
 * NodeJS (>= 12.0.0)  
 * TypeScript  
 * Jest  
-* Mongoose
-* GitHub Actions
+* Mongoose  
+* GitHub Actions  
 
 ## Getting Started
 
@@ -31,8 +31,8 @@ This project was made for studying purposes, and it's based on the free course b
 * Run unit and functional tests:  
 ```yarn test``` or ```npm test```
 
-## Documentation
-Project documentation is in the OpenAPI 3.0 standard. You can access the API documentation using the ```/docs``` endpoint after running the project.
+## Documentation  
+The documentation uses the OpenAPI 3.0 standard. You can access the API documentation using the ```/docs``` endpoint after running the project.
 
 ## Environment variables  
 This project uses dotenv package to manage environment variables. To set your variables, create a .env file (or just rename the .example.env), which contains all the environments needed to run the application. All variables are **required**.
@@ -44,3 +44,7 @@ This project uses dotenv package to manage environment variables. To set your va
 - *JWT_SECRET_KEY* -> Secret value that JWT tokens should be signed with.  
 - *STORM_GLASS_API_URL* -> Storm Glass API service base url.  
 - *STORM_GLASS_API_TOKEN* -> Storm Glass service API token.  
+
+## Deployment  
+This project is currently deployed on Heroku. You can make some requests using the following base url:  
+`https://belinassi-surf-forecast.herokuapp.com`
