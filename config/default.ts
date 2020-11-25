@@ -1,5 +1,6 @@
 export default {
   port: '3000',
+  rateLimit: '10',
   logger: {
     enabled: true,
     level: 'info'

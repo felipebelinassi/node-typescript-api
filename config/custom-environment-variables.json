@@ -1,5 +1,6 @@
 {
   "port": "PORT",
+  "rateLimit": "RATE_LIMIT",
   "logger": {
     "enabled": "LOGGER_ENABLED",
     "level": "LOGGER_LEVEL"
