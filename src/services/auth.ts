@@ -11,10 +11,7 @@ export interface DecodedUser extends Omit<User, '_id'> {
 
 interface AuthService {
   hashPassword: (password: string, salt?: number) => Promise<string>;
-  comparePasswords: (
-    password: string,
-    hashPassword: string
-  ) => Promise<boolean>;
+  comparePasswords: (password: string, hashPassword: string) => Promise<boolean>;
   generateToken: (payload: Record<string, unknown>) => string;
   decodeToken: (token: string) => DecodedUser;
 }

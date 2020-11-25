@@ -12,10 +12,10 @@ const rateLimiter = rateLimit({
   handler(_, res: Response): void {
     const customError = ApiError.format({
       code: 429,
-      message: 'Too many requests to the /forecast endpoint'
+      message: 'Too many requests to the /forecast endpoint',
     });
     res.status(429).send(customError);
-  }
+  },
 });
 
 export default rateLimiter;

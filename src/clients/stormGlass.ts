@@ -36,8 +36,7 @@ export interface StormGlassClient {
   fetchPoints: (lat: number, lng: number) => Promise<ForecastPoint[]>;
 }
 
-const apiParams =
-  'swellDirection,swellHeight,swellPeriod,waveDirection,waveHeight,windDirection,windSpeed';
+const apiParams = 'swellDirection,swellHeight,swellPeriod,waveDirection,waveHeight,windDirection,windSpeed';
 const apiSource = 'noaa';
 
 const isValidPoint = (point: Partial<StormGlassPoint>): boolean =>
@@ -79,11 +78,7 @@ const stormGlass = (request: httpUtil.Request): StormGlassClient => {
       return normalizedResponse;
     } catch (err) {
       if (request.isRequestError(err)) {
-        throw new ResponseError(
-          `Error: ${JSON.stringify(err.response.data)} Code: ${
-            err.response.status
-          }`
-        );
+        throw new ResponseError(`Error: ${JSON.stringify(err.response.data)} Code: ${err.response.status}`);
       }
       throw new RequestError(err.message);
     }

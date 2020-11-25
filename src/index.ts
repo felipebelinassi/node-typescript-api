@@ -8,9 +8,7 @@ enum ExitStatus {
 }
 
 process.on('unhandledRejection', (reason, promise) => {
-  logger.error(
-    `App exiting due to unhlandled promise: ${promise} and reason: ${reason}`
-  );
+  logger.error(`App exiting due to unhlandled promise: ${promise} and reason: ${reason}`);
   throw reason;
 });
 
