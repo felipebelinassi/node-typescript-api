@@ -7,7 +7,7 @@ export default {
     try {
       const beach = new Beach({
         ...req.body,
-        user: req.decoded?.id,
+        userId: req.decoded?.id,
       });
       const result = await beach.save();
       res.status(201).send(result);

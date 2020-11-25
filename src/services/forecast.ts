@@ -4,7 +4,7 @@ import { ForecastProcessingError } from '@src/util/errors';
 import { CreateRatingService, RatingService } from './rating';
 import logger from '@src/logger';
 
-export interface BeachForecast extends Omit<Beach, 'user'>, ForecastPoint {
+export interface BeachForecast extends Omit<Beach, 'userId'>, ForecastPoint {
   rating: number;
 }
 
