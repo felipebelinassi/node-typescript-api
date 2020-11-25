@@ -43,12 +43,11 @@ describe('Beach forecast functional tests', () => {
         lng: '151.289824',
         params: /(.*)/,
         source: 'noaa',
+        end: /(.*)/,
       })
       .reply(200, stormGlassFixture);
 
-    const { body, status } = await global.testRequest
-      .get('/forecast')
-      .set({ 'x-access-token': token });
+    const { body, status } = await global.testRequest.get('/forecast').set({ 'x-access-token': token });
 
     expect(status).toBe(200);
     expect(body).toStrictEqual(apiForecastFixture);
@@ -69,9 +68,7 @@ describe('Beach forecast functional tests', () => {
       })
       .replyWithError('Something went wrong');
 
-    const { status } = await global.testRequest
-      .get(`/forecast`)
-      .set({ 'x-access-token': token });
+    const { status } = await global.testRequest.get(`/forecast`).set({ 'x-access-token': token });
 
     expect(status).toBe(500);
   });

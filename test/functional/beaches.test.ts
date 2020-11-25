@@ -25,10 +25,7 @@ describe('Beaches functional tests', () => {
         position: 'E',
       };
 
-      const response = await global.testRequest
-        .post('/beaches')
-        .set({ 'x-access-token': token })
-        .send(newBeach);
+      const response = await global.testRequest.post('/beaches').set({ 'x-access-token': token }).send(newBeach);
       expect(response.status).toBe(201);
       expect(response.body).toEqual(expect.objectContaining(newBeach));
     });
@@ -41,13 +38,9 @@ describe('Beaches functional tests', () => {
         position: 'E',
       };
 
-      const expectedErrorMessage =
-        'request.body.lat should be number';
+      const expectedErrorMessage = 'request.body.lat should be number';
 
-      const response = await global.testRequest
-        .post('/beaches')
-        .set({ 'x-access-token': token })
-        .send(newBeach);
+      const response = await global.testRequest.post('/beaches').set({ 'x-access-token': token }).send(newBeach);
       expect(response.status).toBe(400);
       expect(response.body).toEqual({
         code: 400,

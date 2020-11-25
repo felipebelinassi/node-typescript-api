@@ -9,12 +9,8 @@ interface CustomError {
   error: string;
 }
 
-const handleClientErrors = (
-  err: mongoose.Error.ValidationError
-): CustomError => {
-  const duplicatedKindErrors = Object.values(err.errors).filter(
-    ({ kind }) => kind === CustomValidation.DUPLICATED
-  );
+const handleClientErrors = (err: mongoose.Error.ValidationError): CustomError => {
+  const duplicatedKindErrors = Object.values(err.errors).filter(({ kind }) => kind === CustomValidation.DUPLICATED);
 
   if (duplicatedKindErrors.length) {
     return { code: 409, error: err.message };
@@ -23,10 +19,7 @@ const handleClientErrors = (
   return { code: 400, error: err.message };
 };
 
-export const sendCreateUpdateError = (
-  res: Response,
-  err: mongoose.Error.ValidationError | Error
-): void => {
+export const sendCreateUpdateError = (res: Response, err: mongoose.Error.ValidationError | Error): void => {
   if (err instanceof mongoose.Error.ValidationError) {
     const clientErrors = handleClientErrors(err);
     const { code, error } = clientErrors;

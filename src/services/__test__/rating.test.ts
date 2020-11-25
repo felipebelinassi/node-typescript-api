@@ -24,7 +24,7 @@ describe('Rating Service', () => {
       windSpeed: 100,
     };
 
-    it ('should get a rating less than 1 for a poor point', () => {
+    it('should get a rating less than 1 for a poor point', () => {
       const rating = defaultRating.getRatingForPoint(defaultPoint);
       expect(rating).toBe(1);
     });
@@ -95,26 +95,17 @@ describe('Rating Service', () => {
 
   describe('Get rating based on wind and wave positions', () => {
     it('should get rating 1 for a beach with onshore winds', () => {
-      const rating = defaultRating.getRatingByWindAndWavePositions(
-        GeoPosition.E,
-        GeoPosition.E,
-      );
+      const rating = defaultRating.getRatingByWindAndWavePositions(GeoPosition.E, GeoPosition.E);
       expect(rating).toBe(1);
     });
 
     it('should get rating 3 for a beach with cross winds', () => {
-      const rating = defaultRating.getRatingByWindAndWavePositions(
-        GeoPosition.E,
-        GeoPosition.S,
-      );
+      const rating = defaultRating.getRatingByWindAndWavePositions(GeoPosition.E, GeoPosition.S);
       expect(rating).toBe(3);
     });
 
     it('should get rating 5 for a beach with offshore winds', () => {
-      const rating = defaultRating.getRatingByWindAndWavePositions(
-        GeoPosition.E,
-        GeoPosition.W,
-      );
+      const rating = defaultRating.getRatingByWindAndWavePositions(GeoPosition.E, GeoPosition.W);
       expect(rating).toBe(5);
     });
   });

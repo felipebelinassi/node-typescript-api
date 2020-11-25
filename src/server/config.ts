@@ -2,6 +2,7 @@ import nodeConfig from 'config';
 
 const config = {
   port: nodeConfig.get<string>('port'),
+  rateLimit: nodeConfig.get<number>('rateLimit'),
   logger: {
     enabled: nodeConfig.get<boolean>('logger.enabled'),
     level: nodeConfig.get<string>('logger.level'),

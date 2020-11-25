@@ -9,9 +9,10 @@ export interface HTTPError extends Error {
 const apiErrorValidator: ErrorRequestHandler = (error: HTTPError, _, res, next): void => {
   const errorCode = error.status || 500;
   const customError = ApiError.format({
-    code: errorCode, message: error.message
+    code: errorCode,
+    message: error.message,
   });
   res.status(errorCode).json(customError);
-}
+};
 
 export default apiErrorValidator;

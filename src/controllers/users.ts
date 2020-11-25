@@ -1,9 +1,6 @@
 import { Request, Response } from 'express';
 import { User } from '@src/database/models';
-import {
-  sendCreateUpdateError,
-  sendErrorResponse,
-} from '../util/send-controller-errors';
+import { sendCreateUpdateError, sendErrorResponse } from '../util/send-controller-errors';
 import { authService } from '@src/services';
 
 export default {
@@ -51,5 +48,5 @@ export default {
       return sendErrorResponse(res, customError);
     }
     return res.send({ user });
-  }
+  },
 };

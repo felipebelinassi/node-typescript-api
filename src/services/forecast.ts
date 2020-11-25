@@ -17,11 +17,7 @@ interface ForecastService {
   processBeachesForecast: (beaches: Beach[]) => Promise<TimeForecast[]>;
 }
 
-const enrichBeachData = (
-  points: ForecastPoint[],
-  beach: Beach,
-  rating: RatingService,
-): BeachForecast[] =>
+const enrichBeachData = (points: ForecastPoint[], beach: Beach, rating: RatingService): BeachForecast[] =>
   points.map((point) => ({
     ...{
       lat: beach.lat,
@@ -37,9 +33,7 @@ const mapForecastByTime = (forecast: BeachForecast[]): TimeForecast[] => {
   const forecastByTime: TimeForecast[] = [];
 
   return forecast.reduce((forecastByTime, item) => {
-    const timePoint = forecastByTime.find(
-      (forecastItem) => forecastItem.time === item.time
-    );
+    const timePoint = forecastByTime.find((forecastItem) => forecastItem.time === item.time);
     if (!timePoint) {
       forecastByTime.push({
         time: item.time,
@@ -54,7 +48,7 @@ const mapForecastByTime = (forecast: BeachForecast[]): TimeForecast[] => {
 
 const orderForecastByRating = (forecast: BeachForecast[]) => {
   return forecast.sort((a, b) => b.rating - a.rating);
-}
+};
 
 const forecast = (stormGlass: StormGlassClient, ratingService: CreateRatingService): ForecastService => {
   const calculateRating = async (beaches: Beach[]) => {
@@ -66,8 +60,8 @@ const forecast = (stormGlass: StormGlassClient, ratingService: CreateRatingServi
       pointsWithCorrectedSources.push(...enrichedBeachData);
     }
     return pointsWithCorrectedSources;
-  }
-  
+  };
+
   const processBeachesForecast = async (beaches: Beach[]) => {
     logger.info(`Preparing the forecast for ${beaches.length} beaches`);
 
@@ -77,7 +71,7 @@ const forecast = (stormGlass: StormGlassClient, ratingService: CreateRatingServi
       return timeForecast.map((item) => ({
         time: item.time,
         forecast: orderForecastByRating(item.forecast),
-      }))
+      }));
     } catch (err) {
       logger.error(err);
       throw new ForecastProcessingError(err.message);

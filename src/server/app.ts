@@ -21,11 +21,13 @@ app.use(
   })
 );
 app.use('/docs', swaggerUi.serve, swaggerUi.setup(apiSpec));
-app.use(OpenApiValidator.middleware({
-  apiSpec: apiSpec as OpenAPIV3.Document,
-  validateRequests: true,
-  validateResponses: true,
-}));
+app.use(
+  OpenApiValidator.middleware({
+    apiSpec: apiSpec as OpenAPIV3.Document,
+    validateRequests: true,
+    validateResponses: true,
+  })
+);
 app.use(expressPino({ logger }));
 app.use(routes);
 app.use(apiErrorValidator);

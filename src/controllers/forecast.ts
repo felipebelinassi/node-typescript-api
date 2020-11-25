@@ -9,9 +9,7 @@ export default {
     try {
       const userId = req.decoded?.id;
       const beaches = await Beach.find({ user: userId });
-      const forecastData = await forecastService.processBeachesForecast(
-        beaches
-      );
+      const forecastData = await forecastService.processBeachesForecast(beaches);
       res.status(200).send(forecastData);
     } catch (err) {
       logger.error(err);

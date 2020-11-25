@@ -11,14 +11,12 @@ jest.mock('@src/clients/stormGlass', () => () => ({
 }));
 
 describe('Forecast Service', () => {
-  const mockedStormGlass = stormGlassClient(request) as jest.Mocked<
-    StormGlassClient
-  >;
+  const mockedStormGlass = stormGlassClient(request) as jest.Mocked<StormGlassClient>;
 
   const getRatingForPointSpy = jest.fn();
-  const mockedRatingService = jest.fn(() => ({
+  const mockedRatingService = (jest.fn(() => ({
     getRatingForPoint: getRatingForPointSpy,
-  })) as unknown as CreateRatingService;
+  })) as unknown) as CreateRatingService;
 
   it('should return the forecast for mutiple beaches in the same hour with different ratings ordered by rating', async () => {
     mockedStormGlass.fetchPoints.mockResolvedValueOnce([
@@ -212,8 +210,6 @@ describe('Forecast Service', () => {
     mockedStormGlass.fetchPoints.mockRejectedValue(expectedErrorMessage);
 
     const forecast = forecastService(mockedStormGlass, mockedRatingService);
-    await expect(forecast.processBeachesForecast(beaches)).rejects.toThrow(
-      ForecastProcessingError
-    );
+    await expect(forecast.processBeachesForecast(beaches)).rejects.toThrow(ForecastProcessingError);
   });
 });
