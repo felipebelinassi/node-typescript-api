@@ -25,11 +25,17 @@ This project was made for studying purposes, and it's based on the free course b
 * Build and run the project:  
 ```yarn start``` or ```npm start```
 
+* Start MongoDB using Docker (optional):  
+```docker-compose up -d```
+
 * Run the project in development mode (using Nodemon):  
 ```yarn start:dev```or ```npm run start:dev```
 
 * Run unit and functional tests:  
 ```yarn test``` or ```npm test```
+
+## Database
+As stated above, this API uses MongoDB as it's database, and requires it to be running before starting the server. You can create a free database using [MongoDB Atlas](https://www.mongodb.com/cloud/atlas) or run a local instance using [Docker](https://www.docker.com/). A docker-compose file has been aded to the project with a simple MongoDB instance. To start it locally run: ```docker-compose up -d```, and then your MongoDB instance will be running at *localhost:27017*.
 
 ## Documentation  
 The documentation uses the OpenAPI 3.0 standard. You can access the API documentation using the ```/docs``` endpoint after running the project.
