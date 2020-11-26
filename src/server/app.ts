@@ -8,7 +8,7 @@ import { OpenAPIV3 } from 'express-openapi-validator/dist/framework/types';
 import expressPino from 'express-pino-logger';
 import logger from '../logger';
 import routes from '../routes';
-import apiSpec from '../api-spec.json';
+import apiSpec from '../docs/spec.json';
 import * as database from '../database';
 import apiErrorValidator from '@src/middlewares/api-error-validator';
 

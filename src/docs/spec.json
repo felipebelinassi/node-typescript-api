@@ -28,18 +28,18 @@
   "paths": {
     "/users": {
       "post": {
-        "description": "Create a new User",
+        "summary": "Create a new User",
         "tags": ["API"],
         "parameters": [],
         "requestBody": {
+          "required": true,
           "content": {
             "application/json": {
               "schema": {
                 "$ref": "#/components/schemas/User"
               }
             }
-          },
-          "required": true
+          }
         },
         "responses": {
           "201": {
@@ -72,18 +72,18 @@
     },
     "/users/authenticate": {
       "post": {
-        "description": "Authenticate the user on the API generating a JWT token",
+        "summary": "Authenticate user on the API generating a JWT token",
         "tags": ["API"],
         "parameters": [],
         "requestBody": {
+          "required": true,
           "content": {
             "application/json": {
               "schema": {
                 "$ref": "#/components/schemas/UserAuth"
               }
             }
-          },
-          "required": true
+          }
         },
         "responses": {
           "200": {
@@ -116,16 +116,16 @@
     },
     "/users/me": {
       "get": {
-        "description": "Get the profile of the token's owner",
+        "summary": "Get the user profile by a JWT token",
         "tags": ["API"],
         "parameters": [
           {
             "name": "x-access-token",
             "in": "header",
+            "required": true,
             "schema": {
               "$ref": "#/components/schemas/jwtToken"
-            },
-            "required": true
+            }
           }
         ],
         "responses": {
@@ -159,27 +159,27 @@
     },
     "/beaches": {
       "post": {
-        "description": "Create a new Beach belonging to the authenticated user",
+        "summary": "Create a new Beach belonging to the authenticated user",
         "tags": ["API"],
         "parameters": [
           {
             "name": "x-access-token",
             "in": "header",
+            "required": true,
             "schema": {
               "$ref": "#/components/schemas/jwtToken"
-            },
-            "required": true
+            }
           }
         ],
         "requestBody": {
+          "required": true,
           "content": {
             "application/json": {
               "schema": {
                 "$ref": "#/components/schemas/Beach"
               }
             }
-          },
-          "required": true
+          }
         },
         "responses": {
           "201": {
@@ -218,10 +218,10 @@
           {
             "name": "x-access-token",
             "in": "header",
+            "required": true,
             "schema": {
               "$ref": "#/components/schemas/jwtToken"
-            },
-            "required": true
+            }
           }
         ],
         "responses": {
@@ -278,19 +278,6 @@
         "enum": ["N", "S", "W", "E"],
         "example": "S"
       },
-      "forecastPropertyKey": {
-        "type": "object",
-        "properties": {
-          "source": {
-            "type": "string",
-            "example": "noa"
-          },
-          "value": {
-            "type": "number",
-            "example": "10.1"
-          }
-        }
-      },
       "User": {
         "type": "object",
         "properties": {
@@ -307,6 +294,7 @@
       },
       "Beach": {
         "type": "object",
+        "required": ["name", "lat", "lng", "position"],
         "properties": {
           "name": {
             "$ref": "#/components/schemas/beachName"
@@ -320,8 +308,7 @@
           "position": {
             "$ref": "#/components/schemas/beachPosition"
           }
-        },
-        "required": ["name", "lat", "lng", "position"]
+        }
       },
       "TimeForecast": {
         "type":"array",
